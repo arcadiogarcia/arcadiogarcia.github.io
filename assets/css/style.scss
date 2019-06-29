@@ -1,0 +1,39 @@
+---
+---
+
+.site-header{
+    background:#EEE;
+    box-shadow: 0px 10px 10px 5px #CCC;
+    border-top: none !important;
+}
+
+.page-content{
+    box-shadow: 0px 10px 50px 5px #DDD;
+}
+
+.site-footer{
+    // background:#EEE;
+}
+
+.footer-heading{
+    display:none;
+}
+
+.social-media-list li a{
+    border:none !important;
+    padding: none !important;
+}
+
+.footer-col-1{
+    display:none;
+}
+
+.footer-col-2{
+    width: calc(55% - (30px / 2)) !important;
+}
+
+.footer-col-3 p{
+    padding: 7.5px !important;
+}
+
+@import "minima";
