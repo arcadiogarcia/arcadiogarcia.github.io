@@ -5,7 +5,7 @@ date:   2019-06-29 00:00:00 -0700
 categories: Windows WinRT C++ C# Development
 permalink: csharp-in-cppwinrt
 ---
-_Disclaimer: I'm not by any means a MSBuild expert and some of the rules described here were originally written by people with deeper understanding of .NET Native/CoreCLR. However I'm not aware of any guide existing for enabling this specific scenario and I've already seen multiple people facing this same problem, so I'm documenting it here._s
+_Disclaimer: I'm not by any means a MSBuild expert and some of the rules described here were originally written by people with deeper understanding of .NET Native/CoreCLR. However I'm not aware of any guide existing for enabling this specific scenario and I've already seen multiple people facing this same problem, so I'm documenting it here._
 
 ## The context
 
