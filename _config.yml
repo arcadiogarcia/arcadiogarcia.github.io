@@ -22,6 +22,10 @@ url: "https://a.rcad.io" # the base hostname & protocol for your site, e.g. http
 twitter_username: arcadio_g_s
 github_username:  arcadiogarcia
 
+permalink: /:categories/:title
+post_dirs: true
+permalink: pretty
+
 
 # Minima date format
 # refer to https://shopify.github.io/liquid/filters/date/ if you want to customize this
