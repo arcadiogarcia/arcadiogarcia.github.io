@@ -4,17 +4,17 @@ title:  "Building C++/WinRT apps that consume C# components"
 date:   2019-06-29 00:00:00 -0700
 categories: Windows WinRT C++ C# Development
 ---
-_Disclaimer: I'm not by any means a MSBuild expert and some of the rules described here were originally written by people with deeper understanding of .NET Native/CoreCLR. However I've never seen an guide for enabling this specific scenario and I've already seen multiple people facing this same problem, so I'm documenting it here._
+_Disclaimer: I'm not by any means a MSBuild expert and some of the rules described here were originally written by people with deeper understanding of .NET Native/CoreCLR. However I'm not aware of any guide existing for enabling this specific scenario and I've already seen multiple people facing this same problem, so I'm documenting it here._s
 
 ## The context
 
-The Windows Runtime is cool. It allows developers to weave together native code (C++/CX or the newer C++/WinRT), .NET managed code (C# or VB.NET) and even JavaScript/TypeScript, passing data around and sharing code in a language agnostic way.
+The Windows Runtime is cool. It allows developers to weave together native code (C++/CX or the newer C++/WinRT), .NET managed code (C# or VB.NET) and even JavaScript/TypeScript, passing data around and sharing code in a language-agnostic way.
 
 The clearest example are [the WinRT Windows APIs](https://docs.microsoft.com/en-us/uwp/api/): you don't need to worry at all about what language they are implemented in since WinRT always exposes APIs that "look native" and use the standard types and patterns of the language you are using. But this also applies to any components you create, for example if you write a component in C++/WinRT and consume it inside the JavaScript code of a Hosted Web App or a WebView then `hstring`s will be exposed as standard JavaScript strings, `IVector`s as arrays…
 
 I don't know if there is any hard usage data about how people use WinRT components in the real world, but according to my own observations it seems most usage falls under two buckets:
 
-   - The WinRT component and the consumer are written in the same language, and WinRT Components are primarily used to as a tool to divide the code in modules, facilitating code reuse and allowing to define proper boundaries between components, rather than as a language interoperability tool.
+   - The WinRT component and the consumer are written in the same language, and WinRT Components are primarily used as a tool to divide the code in modules, facilitating code reuse and allowing to define proper boundaries between components, rather than as a language interoperability tool.
    - The WinRT code is written in a "lower" level language than the consumer, and WinRT is used to allow the higher level language to invoke the lower level code. For example, a .NET app might consume UI controls written in C++, or a web app might delegate computationally intensive tasks to a C++ component.
 
 While it makes sense that these are the most common scenarios, there is a less common situation which is also interesting: the need to consume "higher level components" from a native app. C#/.NET has a rich ecosystem of libraries, and many of those have no C++ equivalents (e.g. the Microsoft Graph SDK or the Azure Cognitive Services SDK), so being able to pull those in should make the life of the C++/WinRT developer way easier… or at least that is the theory.
@@ -99,7 +99,7 @@ Now our managed code is now running, but it is failing to load the .dll from our
 
 Unless you specified otherwise in your project / Visual Studio configuration, you can find the missing .dll files in _%userprofile%\.nuget\packages_, under the subfolders that match your package id and version, E.g. _%userprofile%\.nuget\packages\newtonsoft.json\12.0.2\lib\netstandard2.0\Newtonsoft.Json.dll_.
 
-We have multiple options for getting those files into the app: we could drop it manually into the build output and inject it into the publish packages, but if we are going to be building the app both locally and in a CI pipeline we probably want to integrate that into the MSBuild process.
+We have multiple options for getting those files into the app, the simplest option would be to paste the files manually into the build output and into the publish packages, but if we are going to be building the app both locally and in a CI pipeline we probably want to integrate that into the MSBuild process.
 
 In order to do that, what I usually do is create a _nugetPackages_ folder in the project location, copy the .dll files there and commit them to the git repo. This is not the cleanest way of ensuring the files are available everywhere, but it is definitely the simplest. An alternative approach would be to have an script that downloads the NuGet packages and extracts and copies the .dll files to a temporary folder, and run that script as part of the build process both locally and in the CI build.
 
